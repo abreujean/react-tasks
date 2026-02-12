@@ -1,6 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
 import { Breadcrumbs } from '@/components/breadcrumbs';
+import { BookOpen, BriefcaseIcon, Folder, LayoutGrid, Menu, Search } from 'lucide-react'; 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -46,6 +46,11 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
+    { 
+        title: 'Tasks', 
+        href: '/tasks', 
+        icon: BriefcaseIcon, 
+    }, 
 ];
 
 const rightNavItems: NavItem[] = [
