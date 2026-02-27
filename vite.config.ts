@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
 import { defineConfig } from 'vite';
+import path from 'path';
 
 export default defineConfig({
     plugins: [
@@ -17,10 +18,15 @@ export default defineConfig({
             },
         }),
         tailwindcss(),
-        wayfinder({
-            formVariants: true,
-        }),
+        // wayfinder({
+        //     formVariants: true,
+        // }),
     ],
+    resolve: {
+        alias: {
+            'ziggy-js': path.resolve('node_modules/ziggy-js'),
+        },
+    },
     esbuild: {
         jsx: 'automatic',
     },
