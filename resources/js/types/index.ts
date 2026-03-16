@@ -16,3 +16,8 @@ export type SharedData = {
     sidebarOpen: boolean;
     [key: string]: unknown;
 };
+
+export interface BreadcrumbItem {
+    title: string;
+    href: string;
+}

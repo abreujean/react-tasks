@@ -1,5 +1,5 @@
-import { Head, router } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
+import { Head, Link, router } from '@inertiajs/react';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
     Table,
     TableBody,
@@ -9,55 +9,84 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import type { Task } from '@/types';
+import { type BreadcrumbItem, type Task } from '@/types'; 
+import { toast } from 'sonner';
+
+const breadcrumbs: BreadcrumbItem[] = [
+    { title: 'Dashboard', href: '/dashboard' },
+    { title: 'Tasks', href: '/tasks' },
+];
+ 
 
 export default function Index({ tasks }: { tasks: Task[] }) {
-
-    const deleteTask = (id: number) => { 
+    const deleteTask = (id: number) => {
         if (confirm('Are you sure?')) {
             router.delete(route('tasks.destroy', { id }));
+            toast.success('Task deleted successfully');
         }
-    }; 
+    };
 
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Tasks List" />
 
-            <Table className={'mt-4'}>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Task</TableHead>
-                        <TableHead className="w-[100px]">Status</TableHead>
-                        <TableHead className="w-[150px] text-right">
-                            Actions
-                        </TableHead>
-                    </TableRow>
-                </TableHeader>
+            <div className={'mt-8'}>
+                <Link
+                    className={buttonVariants({ variant: 'outline' })}
+                    href={route('tasks.create')}
+                >
+                    Create Task
+                </Link>
 
-                <TableBody>
-                    {tasks.map((task) => (
-                        <TableRow key={task.id}>
-                            <TableCell>{task.name}</TableCell>
-                            <TableCell
-                                className={
-                                    task.is_completed
-                                        ? 'text-green-600'
-                                        : 'text-red-700'
-                                }
-                            >
-                                {task.is_completed
-                                    ? 'Completed'
-                                    : 'In Progress'}
-                            </TableCell>
+                <Table className={'mt-4'}>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Task</TableHead>
+                            <TableHead className="w-[100px]">Status</TableHead>
+                            <TableHead className="w-[150px] text-right">
+                                Actions
+                            </TableHead>
+                        </TableRow>
+                    </TableHeader>
+
+                    <TableBody>
+                        {tasks.map((task) => (
+                            <TableRow key={task.id}>
+                                <TableCell>{task.name}</TableCell>
+                                <TableCell
+                                    className={
+                                        task.is_completed
+                                            ? 'text-green-600'
+                                            : 'text-red-700'
+                                    }
+                                >
+                                    {task.is_completed
+                                        ? 'Completed'
+                                        : 'In Progress'}
+                                </TableCell>
                                 <TableCell className="flex flex-row gap-x-2 text-right">
-                                    <Button variant={'destructive'} className={'cursor-pointer'} onClick={() => deleteTask(task.id)}>
+                                    <Link
+                                        className={buttonVariants({
+                                            variant: 'default',
+                                        })}
+                                        href={route('tasks.edit', task.id)}
+                                    >
+                                        Edit
+                                    </Link>
+
+                                    <Button
+                                        variant={'destructive'}
+                                        className={'cursor-pointer'}
+                                        onClick={() => deleteTask(task.id)}
+                                    >
                                         Delete
                                     </Button>
                                 </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
         </AppLayout>
     );
 }
